@@ -1,146 +1,197 @@
-
-import { readFileSync } from 'fs';
-import marked from 'marked';
-import { sanitizeHtml } from './sanitizer';
-import { ParsedRequest } from './types';
-const twemoji = require('twemoji');
-const twOptions = { folder: 'svg', ext: '.svg' };
+import { readFileSync } from "fs";
+import marked from "marked";
+// import axios from 'axios'
+import { sanitizeHtml } from "./sanitizer";
+import { ParsedRequest } from "./types";
+import { getColorHash } from "./kuclap.helper";
+const twemoji = require("twemoji");
+const twOptions = { folder: "svg", ext: ".svg" };
 const emojify = (text: string) => twemoji.parse(text, twOptions);
 
-const rglr = readFileSync(`${__dirname}/../_fonts/Inter-Regular.woff2`).toString('base64');
-const bold = readFileSync(`${__dirname}/../_fonts/Inter-Bold.woff2`).toString('base64');
-const mono = readFileSync(`${__dirname}/../_fonts/Vera-Mono.woff2`).toString('base64');
+const small_nong = readFileSync(
+  `${__dirname}/../_assets/small-nong.svg`
+).toString("base64");
 
-function getCss(theme: string, fontSize: string) {
-    let background = 'white';
-    let foreground = 'black';
-    let radial = 'lightgray';
+const big_nong = readFileSync(`${__dirname}/../_assets/big-nong.svg`).toString(
+  "base64"
+);
 
-    if (theme === 'dark') {
-        background = 'black';
-        foreground = 'white';
-        radial = 'dimgray';
-    }
-    return `
-    @font-face {
-        font-family: 'Inter';
-        font-style:  normal;
-        font-weight: normal;
-        src: url(data:font/woff2;charset=utf-8;base64,${rglr}) format('woff2');
-    }
+const kuclap_logo = readFileSync(`${__dirname}/../_assets/kuclap.svg`).toString(
+  "base64"
+);
 
-    @font-face {
-        font-family: 'Inter';
-        font-style:  normal;
-        font-weight: bold;
-        src: url(data:font/woff2;charset=utf-8;base64,${bold}) format('woff2');
-    }
+const bg = readFileSync(`${__dirname}/../_assets/confetti-bg.png`).toString(
+  "base64"
+);
+const kanit_medium = readFileSync(
+  `${__dirname}/../_fonts/Kanit-Medium.ttf`
+).toString("base64");
 
-    @font-face {
-        font-family: 'Vera';
-        font-style: normal;
-        font-weight: normal;
-        src: url(data:font/woff2;charset=utf-8;base64,${mono})  format("woff2");
+const kanit_regular = readFileSync(
+  `${__dirname}/../_fonts/Kanit-Regular.ttf`
+).toString("base64");
+
+// function
+
+function getCssKUclap(classId: string) {
+  // // let background = "white";
+  // let foreground = "black";
+  // // let radial = "lightgray";
+
+  // if (theme === "dark") {
+  //   // background = "black";
+  //   foreground = "white";
+  //   // radial = "dimgray";
+  // }
+  return `
+      @font-face {
+          font-family: 'Kanit-Medium';
+          font-style:  normal;
+          font-weight: normal;
+          src: url(data:font/truetype;charset=utf-8;base64,${kanit_medium}) format('truetype');
       }
 
-    body {
-        background: ${background};
-        background-image: radial-gradient(circle at 25px 25px, ${radial} 2%, transparent 0%), radial-gradient(circle at 75px 75px, ${radial} 2%, transparent 0%);
-        background-size: 100px 100px;
-        height: 100vh;
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-    }
+      @font-face {
+          font-family: 'Kanit-Regular';
+          font-style:  normal;
+          font-weight: normal;
+          src: url(data:font/truetype;charset=utf-8;base64,${kanit_regular}) format('truetype');
+      }
 
-    code {
-        color: #D400FF;
-        font-family: 'Vera';
-        white-space: pre-wrap;
-        letter-spacing: -5px;
-    }
-
-    code:before, code:after {
-        content: '\`';
-    }
-
-    .logo-wrapper {
-        display: flex;
-        align-items: center;
-        align-content: center;
-        justify-content: center;
-        justify-items: center;
-    }
-
-    .logo {
-        margin: 0 75px;
-    }
-
-    .plus {
-        color: #BBB;
-        font-family: Times New Roman, Verdana;
-        font-size: 100px;
-    }
-
-    .spacer {
-        margin: 150px;
-    }
-
-    .emoji {
-        height: 1em;
-        width: 1em;
-        margin: 0 .05em 0 .1em;
-        vertical-align: -0.1em;
-    }
+      body {
+          position: relative;
+          font-family: 'Kanit-Regular';
+          height: 100vh;
+          display: flex;
+          text-align: center;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background: url(data:image/png;base64,${bg});
+      }
     
-    .heading {
-        font-family: 'Inter', sans-serif;
-        font-size: ${sanitizeHtml(fontSize)};
-        font-style: normal;
-        color: ${foreground};
-        line-height: 1.8;
-    }`;
+      .review-card {
+           width: 1742px;
+           height: 806px;
+           background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), #FFFFFF;
+           box-shadow: 4px 8px 30px rgba(0, 0, 0, 0.1);
+           border-radius: 16px;
+           display: flex;
+           justify-content: flex-start;
+           position: relative;
+      }
+
+      .review-content {
+          font-family: 'Kanit-Regular';
+          display: block;
+          display: -webkit-box;
+          line-height: 1.8;   
+          margin: 100px;
+          font-weight: 400;
+          font-size: 60px;
+          color: #4F4F4F;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: left;
+          width: 100%;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          height: 430px;
+      }
+
+      .subject {
+          font-family: 'Kanit-Medium';
+				  height: 104px;
+      	  font-size: 64px;
+					padding: 2px 52px;
+					margin: 0 0 51px 78px;
+					border-radius: 10px;
+					text-align: center;
+					color: white;
+					position: absolute;
+					transform: translateY(-52px);
+					font-weight: 500;
+					text-overflow: ellipsis;
+					background: ${getColorHash(classId)};
+					overflow: hidden;
+					max-width: 79%;
+					white-space: nowrap;
+					filter: brightness(100%);
+					
+					span {
+								font-weight: 400;
+								margin-left: 2px;
+					}
+      }
+
+      .kuclap-logo {
+          position: absolute;
+          margin: auto;
+          bottom: 32px;
+          width: 414px;
+          height: 120px;
+      }
+
+      .small-nong {
+          position: absolute;
+          bottom: 0;
+          left: 100px;
+       }
+
+      .big-nong {
+          position: absolute;
+          bottom: 0;
+          right: 15px;
+          transform: rotate(3.09deg);
+      }
+      `;
 }
 
 export function getHtml(parsedReq: ParsedRequest) {
-    const { text, theme, md, fontSize, images, widths, heights } = parsedReq;
-    return `<!DOCTYPE html>
-<html>
-    <meta charset="utf-8">
-    <title>Generated Image</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        ${getCss(theme, fontSize)}
-    </style>
-    <body>
-        <div>
-            <div class="spacer">
-            <div class="logo-wrapper">
-                ${images.map((img, i) =>
-                    getPlusSign(i) + getImage(img, widths[i], heights[i])
-                ).join('')}
-            </div>
-            <div class="spacer">
-            <div class="heading">${emojify(
-                md ? marked(text) : sanitizeHtml(text)
+  //   const { text, theme, md, fontSize, images, widths, heights } = parsedReq;
+  const { text, md, classId, classNameTH } = parsedReq;
+
+  const template = `<!DOCTYPE html>
+  <html>
+      <meta charset="utf-8">
+      <title>Generated Image</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			
+      <style>
+          ${getCssKUclap(classId)}
+      </style>
+      <body>
+					<div class="review-card">
+						<div class="subject">
+							${classId} <span> | ${classNameTH} </span>
+						</div>
+						
+            <div class="review-content">${emojify(
+              md ? marked(text) : sanitizeHtml(text)
             )}
             </div>
-        </div>
-    </body>
-</html>`;
+          </div>
+          <img class="kuclap-logo" src="data:image/svg+xml;base64,${kuclap_logo}" />
+          
+          <img class="small-nong" src="data:image/svg+xml;base64,${small_nong}" />
+          <img class="big-nong" src="data:image/svg+xml;base64,${big_nong}" />
+          
+      </body>
+  </html>`;
+
+  return template;
 }
 
-function getImage(src: string, width ='auto', height = '225') {
-    return `<img
-        class="logo"
-        alt="Generated Image"
-        src="${sanitizeHtml(src)}"
-        width="${sanitizeHtml(width)}"
-        height="${sanitizeHtml(height)}"
-    />`
-}
+// function getImage(src: string, width = "auto", height = "225") {
+//   return `<img
+//         class="logo"
+//         alt="Generated Image"
+//         src="${sanitizeHtml(src)}"
+//         width="${sanitizeHtml(width)}"
+//         height="${sanitizeHtml(height)}"
+//     />`;
+// }
 
-function getPlusSign(i: number) {
-    return i === 0 ? '' : '<div class="plus">+</div>';
-}
+// function getPlusSign(i: number) {
+//   return i === 0 ? "" : '<div class="plus">+</div>';
+// }
