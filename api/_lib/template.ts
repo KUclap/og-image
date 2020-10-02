@@ -71,8 +71,9 @@ function getCssKUclap(classId: string) {
       }
     
       .review-card {
+           margin-top: -100px;
            width: 1742px;
-           height: 806px;
+           height: 746px;
            background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), #FFFFFF;
            box-shadow: 4px 8px 30px rgba(0, 0, 0, 0.1);
            border-radius: 16px;
@@ -88,7 +89,7 @@ function getCssKUclap(classId: string) {
           display: -webkit-box;
           line-height: 1.6;   
           margin: 0 100px;
-          margin-top: -60px;
+          // margin-top: -60px;
           font-weight: 400;
           font-size: 65px;
           color: #4F4F4F;
@@ -129,7 +130,7 @@ function getCssKUclap(classId: string) {
       .kuclap-logo {
           position: absolute;
           margin: auto;
-          bottom: 32px;
+          bottom: 92px;
           width: 414px;
           height: 120px;
       }
