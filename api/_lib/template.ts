@@ -77,7 +77,8 @@ function getCssKUclap(classId: string) {
            box-shadow: 4px 8px 30px rgba(0, 0, 0, 0.1);
            border-radius: 16px;
            display: flex;
-           justify-content: flex-start;
+           justify-content: center;
+           align-items: center;
            position: relative;
       }
 
@@ -85,10 +86,11 @@ function getCssKUclap(classId: string) {
           font-family: 'Kanit-Regular';
           display: block;
           display: -webkit-box;
-          line-height: 1.8;   
-          margin: 100px;
+          line-height: 1.6;   
+          margin: 0 100px;
+          margin-top: -60px;
           font-weight: 400;
-          font-size: 60px;
+          font-size: 65px;
           color: #4F4F4F;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -96,7 +98,7 @@ function getCssKUclap(classId: string) {
           width: 100%;
           -webkit-line-clamp: 4;
           -webkit-box-orient: vertical;
-          height: 430px;
+          height: 416px;
       }
 
       .subject {
@@ -104,12 +106,12 @@ function getCssKUclap(classId: string) {
 				  height: 104px;
       	  font-size: 64px;
 					padding: 2px 52px;
-					margin: 0 0 51px 78px;
+          left: 78px;
 					border-radius: 10px;
 					text-align: center;
 					color: white;
 					position: absolute;
-					transform: translateY(-52px);
+          top: -52px;
 					font-weight: 500;
 					text-overflow: ellipsis;
 					background: ${getColorHash(classId)};
